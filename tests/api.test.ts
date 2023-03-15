@@ -53,6 +53,7 @@ describe('api', () => {
     }
 
     expect(out).to.deep.equal({
+      type: 'Node',
       tag: 'div',
       events: [],
       children: [],
@@ -70,16 +71,19 @@ describe('api', () => {
     }
 
     expect(out).to.deep.equal({
+      type: 'Node',
       tag: 'h1',
       events: [],
       children: [
         {
+          type: 'Node',
           tag: 'h2',
           events: [],
           children: [],
           attributes: {},
         },
         {
+          type: 'Node',
           tag: 'h3',
           events: [],
           children: [],
@@ -97,10 +101,12 @@ describe('api', () => {
     }
 
     expect(out).to.deep.equal({
+      type: 'Node',
       tag: 'h1',
       events: [],
       children: [
         {
+          type: 'Text',
           innerText: 'Hello',
         },
       ],
@@ -118,10 +124,12 @@ describe('api', () => {
     }
 
     expect(out).to.deep.equal({
+      type: 'Node',
       tag: 'h1',
       events: [],
       children: [
         {
+          type: 'Text',
           innerText: '3',
         },
       ],
@@ -131,10 +139,12 @@ describe('api', () => {
     A.set(42);
     await wait();
     expect(out).to.deep.equal({
+      type: 'Node',
       tag: 'h1',
       events: [],
       children: [
         {
+          type: 'Text',
           innerText: '42',
         },
       ],
@@ -152,6 +162,7 @@ describe('api', () => {
     }
 
     expect(out).to.deep.equal({
+      type: 'Node',
       tag: 'div',
       events: [],
       children: [],
@@ -161,6 +172,7 @@ describe('api', () => {
     A.set(42);
     await wait();
     expect(out).to.deep.equal({
+      type: 'Node',
       tag: 'div',
       events: [],
       children: [],
@@ -178,6 +190,7 @@ describe('api', () => {
     }
 
     expect(out).to.deep.equal({
+      type: 'Node',
       tag: 'div',
       events: [],
       children: [],
@@ -187,6 +200,7 @@ describe('api', () => {
     A.set(42);
     await wait();
     expect(out).to.deep.equal({
+      type: 'Node',
       tag: 'div',
       events: [],
       children: [],
@@ -203,6 +217,7 @@ describe('api', () => {
     }
 
     expect(out).to.deep.equal({
+      type: 'Node',
       tag: 'div',
       events: [['foo', func]],
       children: [],

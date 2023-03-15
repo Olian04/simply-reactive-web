@@ -49,7 +49,7 @@ export const createQueryAtom = <T = string | number>(props: {
       history.pushState(null, '', toUrlString(Value.get() as any));
     },
     urlWhenSet: (valueOrFunction: T | ((oldValue: T) => T)) => {
-      ValueGroup.get().forEach((v) => v.get()); // Subscribe to all query atoms
+      ValueGroup.get().forEach((k) => ValueGroup.find(k).get()); // Subscribe to all query atoms
       if (typeof valueOrFunction === 'function') {
         const func = valueOrFunction as (oldValue: T) => T;
         return toUrlString(func(Value.get() as any));
