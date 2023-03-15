@@ -34,6 +34,7 @@ export const renderChildren = <RenderTarget>(
       if (typeof child.value === 'string') {
         return config.createText(child.value);
       }
+
       if (typeof child.value === 'number') {
         return config.createText(String(child.value));
       }

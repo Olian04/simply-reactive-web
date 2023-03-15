@@ -3,6 +3,10 @@ import { expect } from 'chai';
 
 import { createRenderer } from '!api';
 import { RenderError } from '!errors/RenderError';
+import { createAtom } from 'simply-reactive';
+
+const wait = async (milliseconds: number = 0) =>
+  new Promise((resolve) => setTimeout(resolve, milliseconds));
 
 type TestTarget =
   | {
@@ -42,6 +46,7 @@ describe('api', () => {
   it('should export a template literal tag function', () => {
     expect(typeof html).to.equal('function');
     const out = html` <div></div> `;
+    expect(typeof out).to.equal('object');
   });
 
   it('should throw when provided no root element', () => {
@@ -61,8 +66,27 @@ describe('api', () => {
     expect(() => html`${42}`).to.throw(RenderError);
   });
 
+  it('should throw when provided function value to composite attribute', () => {
+    expect(() => html` <div foo="before ${() => 42} after"></div> `).to.throw(
+      RenderError
+    );
+  });
+
+  it('should throw when provided array value to composite attribute', () => {
+    expect(() => html` <div foo="before ${[]} after"></div> `).to.throw(
+      RenderError
+    );
+  });
+
+  it('should throw when provided array value to data attribute', () => {
+    expect(() => html` <div foo=${[]}></div> `).to.throw(RenderError);
+  });
+
   it('should work with text attributes', () => {
     const out = html` <div foo="bar"></div> `;
+    if ('innerText' in out) {
+      expect.fail();
+    }
 
     expect(out).to.deep.equal({
       tag: 'div',
@@ -70,5 +94,75 @@ describe('api', () => {
       children: [],
       attributes: { foo: 'bar' },
     });
+  });
+
+  it('should work with data attributes', async () => {
+    const A = createAtom({
+      default: 3,
+    });
+    const out = html` <div foo=${A}></div> `;
+    if ('innerText' in out) {
+      expect.fail();
+    }
+
+    expect(out).to.deep.equal({
+      tag: 'div',
+      events: [],
+      children: [],
+      attributes: { foo: '3' },
+    });
+
+    A.set(42);
+    await wait();
+    expect(out).to.deep.equal({
+      tag: 'div',
+      events: [],
+      children: [],
+      attributes: { foo: '42' },
+    });
+  });
+
+  it('should work with composite attributes', async () => {
+    const A = createAtom({
+      default: 3,
+    });
+    const out = html` <div foo="before ${A} after"></div> `;
+    if ('innerText' in out) {
+      expect.fail();
+    }
+
+    expect(out).to.deep.equal({
+      tag: 'div',
+      events: [],
+      children: [],
+      attributes: { foo: 'before 3 after' },
+    });
+
+    A.set(42);
+    await wait();
+    expect(out).to.deep.equal({
+      tag: 'div',
+      events: [],
+      children: [],
+      attributes: { foo: 'before 42 after' },
+    });
+  });
+
+  it('should work with function attributes', () => {
+    const func = () => 42;
+    const out = html` <div foo=${func}></div> `;
+
+    if ('innerText' in out) {
+      expect.fail();
+    }
+
+    expect(out).to.deep.equal({
+      tag: 'div',
+      events: [['foo', func]],
+      children: [],
+      attributes: {},
+    });
+
+    expect(out.events[0][1]()).to.equal(42);
   });
 });

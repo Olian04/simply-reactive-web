@@ -7,6 +7,7 @@ import type { RendererConfig } from '!types/RendererConfig';
 import { renderChildren } from '!renderer/renderChildren';
 import { isValidDataAttribute } from '!util/isValidDataAttribute';
 import { RenderError } from '!errors/RenderError';
+import { isValidCompositeAttribute } from '!util/isValidCompositeAttribute';
 
 export const renderChild = <RenderTarget>(
   config: RendererConfig<RenderTarget>,
@@ -18,27 +19,42 @@ export const renderChild = <RenderTarget>(
       el.setAttribute(attr.key, attr.value);
       continue;
     }
-    if (!isValidDataAttribute(attr)) {
+    if (isValidDataAttribute(attr)) {
+      switch (typeof attr.value) {
+        case 'string':
+        case 'number':
+          el.setAttribute(attr.key, String(attr.value));
+          break;
+        case 'object':
+          const Value = attr.value;
+          createEffect(() => {
+            el.setAttribute(attr.key, String(Value.get()));
+          });
+          break;
+        case 'function':
+          el.addEventListener(attr.key, attr.value);
+          break;
+        default:
+          throw new RenderError(
+            `Invalid attribute data. Expected a number, string, function, or a subscribable. But got "${attr.value}"`
+          );
+      }
+    } else if (isValidCompositeAttribute(attr)) {
+      const values = attr.value;
+      createEffect(() => {
+        el.setAttribute(
+          attr.key,
+          values
+            .map((v) =>
+              String(typeof v.value === 'object' ? v.value.get() : v.value)
+            )
+            .join('')
+        );
+      });
+    } else {
       throw new RenderError(
         `Invalid attribute data. Expected a number, string, or a subscribable. But got "${attr.value}"`
       );
-    }
-    if (typeof attr.value === 'string') {
-      el.setAttribute(attr.key, attr.value);
-    } else if (typeof attr.value === 'number') {
-      el.setAttribute(attr.key, String(attr.value));
-    } else if (
-      typeof attr.value === 'object' &&
-      attr.value !== null &&
-      'get' in attr.value &&
-      'subscribe' in attr.value
-    ) {
-      const Value = attr.value;
-      createEffect(() => {
-        el.setAttribute(attr.key, String(Value.get()));
-      });
-    } else if (typeof attr.value === 'function') {
-      el.addEventListener(attr.key, attr.value);
     }
   }
   el.appendChildren(...renderChildren(config, ast));
