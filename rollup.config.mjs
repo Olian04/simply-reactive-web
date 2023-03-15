@@ -7,11 +7,15 @@ import typescript from '@rollup/plugin-typescript';
 export default [
   {
     input: './src/api.ts',
+    external: ['simply-reactive'],
     output: {
       file: './cdn/umd.js',
       format: 'umd',
       name: 'simplyReactiveWeb',
       sourcemap: true,
+      globals: {
+        'simply-reactive': 'simplyReactive',
+      },
     },
     plugins: [
       typescript({
@@ -30,10 +34,14 @@ export default [
   },
   {
     input: './src/api.ts',
+    external: ['simply-reactive'],
     output: {
       file: './cdn/esm.js',
       format: 'es',
       sourcemap: true,
+      paths: {
+        'simply-reactive': 'https://cdn.jsdelivr.net/npm/simply-reactive@5',
+      },
     },
     plugins: [
       typescript({

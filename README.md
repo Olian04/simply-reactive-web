@@ -17,6 +17,7 @@ simply-reactive-web is a small fine-grained reactive renderer inspired by [Solid
 [`npm i simply-reactive-web`](https://www.npmjs.com/package/simply-reactive-web)
 
 ```ts
+import { createAtom, createSelector, createEffect } from 'simply-reactive';
 import { html, forEach } from 'simply-reactive-web';
 ```
 
@@ -27,6 +28,11 @@ import { html, forEach } from 'simply-reactive-web';
 ```html
 <script type="module">
   import {
+    createAtom,
+    createSelector,
+    createEffect,
+  } from 'https://cdn.jsdelivr.net/npm/simply-reactive@5';
+  import {
     html,
     forEach,
   } from 'https://cdn.jsdelivr.net/npm/simply-reactive-web';
@@ -36,6 +42,7 @@ import { html, forEach } from 'simply-reactive-web';
 #### UMD
 
 ```html
+<script src="https://cdn.jsdelivr.net/npm/simply-reactive@5/cdn/umd.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/simply-reactive-web/cdn/umd.js"></script>
 <script>
   const { html, forEach } = simplyReactiveWeb;
