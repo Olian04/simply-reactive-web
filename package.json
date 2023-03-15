@@ -2,7 +2,7 @@
   "name": "simply-reactive-web",
   "version": "0.1.0",
   "description": "",
-  "browser": "cdn/api.es.js",
+  "browser": "cdn/esm.js",
   "main": "dist/api.js",
   "types": "dist/api.d.ts",
   "scripts": {
@@ -44,7 +44,7 @@
     "http-server": "^14.1.1",
     "mocha": "^10.2.0",
     "rimraf": "^4.4.0",
-    "rollup": "3.19.0",
+    "rollup": "3.19.1",
     "ts-node": "^10.9.1",
     "tsconfig-paths": "^4.1.2",
     "tslib": "^2.5.0",
@@ -53,7 +53,7 @@
     "typescript-transform-paths": "^3.4.6"
   },
   "dependencies": {
-    "simply-reactive": "^4.1.0",
+    "simply-reactive": "^5.0.2",
     "xml-template-literal": "^0.2.5"
   }
 }
