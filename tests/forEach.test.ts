@@ -19,40 +19,55 @@ describe('forEach', () => {
         ${forEach(A, (v) => html`<li>${v}</li>`)}
       </ol>
     `;
+    if (out.type !== 'Node') {
+      expect.fail();
+    }
 
     expect(out).to.deep.equal({
+      type: 'Node',
       tag: 'ol',
       events: [],
       children: [
         {
-          tag: 'li',
-          events: [],
+          type: 'Fragment',
           children: [
             {
-              innerText: A.get()[0],
+              type: 'Node',
+              tag: 'li',
+              events: [],
+              children: [
+                {
+                  type: 'Text',
+                  innerText: A.get()[0],
+                },
+              ],
+              attributes: {},
             },
-          ],
-          attributes: {},
-        },
-        {
-          tag: 'li',
-          events: [],
-          children: [
             {
-              innerText: A.get()[1],
+              type: 'Node',
+              tag: 'li',
+              events: [],
+              children: [
+                {
+                  type: 'Text',
+                  innerText: A.get()[1],
+                },
+              ],
+              attributes: {},
             },
-          ],
-          attributes: {},
-        },
-        {
-          tag: 'li',
-          events: [],
-          children: [
             {
-              innerText: A.get()[2],
+              type: 'Node',
+              tag: 'li',
+              events: [],
+              children: [
+                {
+                  type: 'Text',
+                  innerText: A.get()[2],
+                },
+              ],
+              attributes: {},
             },
           ],
-          attributes: {},
         },
       ],
       attributes: {},

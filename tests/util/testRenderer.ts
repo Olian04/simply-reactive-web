@@ -2,17 +2,36 @@ import { createRenderer } from '!api';
 
 type TestTarget =
   | {
+      type: 'Node';
       tag: string;
       events: [string, Function][];
       children: TestTarget[];
       attributes: Record<string, string>;
     }
   | {
+      type: 'Fragment';
+      children: TestTarget[];
+    }
+  | {
+      type: 'Text';
       innerText: string | null;
     };
+
 export const html = createRenderer<TestTarget>({
+  createFragment: () => {
+    const ctx: TestTarget = {
+      type: 'Fragment',
+      children: [],
+    };
+    return {
+      appendChildren: (...evs) => ctx.children.push(...evs),
+      clearChildren: () => (ctx.children = []),
+      getRenderTarget: () => ctx,
+    };
+  },
   createElement: (tag) => {
     const ctx: TestTarget = {
+      type: 'Node',
       tag,
       events: [],
       children: [],
@@ -29,7 +48,8 @@ export const html = createRenderer<TestTarget>({
     };
   },
   createText: (str) => {
-    const ctx = {
+    const ctx: TestTarget = {
+      type: 'Text',
       innerText: str,
     };
 

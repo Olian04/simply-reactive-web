@@ -45,9 +45,18 @@ export const renderChildren = <RenderTarget>(
       }
 
       const Value = child.value;
-      const text = config.createText('');
-      createEffect(() => {
-        text.setText(String(Value.get()));
-      });
-      return text.getRenderTarget();
+      if (Array.isArray(Value.get())) {
+        const frag = config.createFragment();
+        createEffect(() => {
+          frag.clearChildren();
+          frag.appendChildren(...(Value.get() as RenderTarget[]));
+        });
+        return frag.getRenderTarget();
+      } else {
+        const text = config.createText(String(Value.get()));
+        createEffect(() => {
+          text.setText(String(Value.get()));
+        });
+        return text.getRenderTarget();
+      }
     });

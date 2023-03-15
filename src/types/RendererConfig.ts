@@ -1,4 +1,9 @@
 export type RendererConfig<RenderTarget> = {
+  createFragment: () => {
+    clearChildren: () => void;
+    appendChildren: (...el: RenderTarget[]) => void;
+    getRenderTarget: () => RenderTarget;
+  };
   createElement: (tag: string) => {
     appendChildren: (...el: RenderTarget[]) => void;
     setClassName: (className: string) => void;

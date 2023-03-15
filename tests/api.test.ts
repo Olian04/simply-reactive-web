@@ -48,7 +48,7 @@ describe('api', () => {
 
   it('should work with text attributes', () => {
     const out = html` <div foo="bar"></div> `;
-    if ('innerText' in out) {
+    if (out.type !== 'Node') {
       expect.fail();
     }
 
@@ -65,7 +65,7 @@ describe('api', () => {
       <h2></h2>
       <h3></h3>
     </h1>`;
-    if ('innerText' in out) {
+    if (out.type !== 'Node') {
       expect.fail();
     }
 
@@ -92,7 +92,7 @@ describe('api', () => {
 
   it('should work with child text node', () => {
     const out = html`<h1>Hello</h1>`;
-    if ('innerText' in out) {
+    if (out.type !== 'Node') {
       expect.fail();
     }
 
@@ -113,7 +113,7 @@ describe('api', () => {
       default: 3,
     });
     const out = html`<h1>${A}</h1>`;
-    if ('innerText' in out) {
+    if (out.type !== 'Node') {
       expect.fail();
     }
 
@@ -147,7 +147,7 @@ describe('api', () => {
       default: 3,
     });
     const out = html` <div foo=${A}></div> `;
-    if ('innerText' in out) {
+    if (out.type !== 'Node') {
       expect.fail();
     }
 
@@ -173,7 +173,7 @@ describe('api', () => {
       default: 3,
     });
     const out = html` <div foo="before ${A} after"></div> `;
-    if ('innerText' in out) {
+    if (out.type !== 'Node') {
       expect.fail();
     }
 
@@ -198,7 +198,7 @@ describe('api', () => {
     const func = () => 42;
     const out = html` <div foo=${func}></div> `;
 
-    if ('innerText' in out) {
+    if (out.type !== 'Node') {
       expect.fail();
     }
 
