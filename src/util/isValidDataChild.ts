@@ -10,8 +10,4 @@ export const isValidDataChild = <RenderTarget>(
   child: AstChild<DynamicSegments<RenderTarget>>
 ): child is AstChild<DynamicChild<RenderTarget>> & {
   type: ChildType.Data;
-} =>
-  child.type === ChildType.Data &&
-  (Array.isArray(child.value) ||
-    typeof child.value === 'number' ||
-    typeof child.value === 'string');
+} => child.type === ChildType.Data && typeof child.value !== 'function';

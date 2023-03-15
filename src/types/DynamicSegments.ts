@@ -2,7 +2,10 @@ import type { Trait } from 'simply-reactive';
 
 type BaseTypes = string | number;
 
-export type DynamicChild<RenderTarget> = BaseTypes | RenderTarget[];
+export type DynamicChild<RenderTarget> =
+  | BaseTypes
+  | RenderTarget[]
+  | (Trait.ImplementsGet<BaseTypes> & Trait.ImplementsSubscribe);
 
 export type DynamicAttribute =
   | BaseTypes

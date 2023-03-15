@@ -37,9 +37,16 @@ const html = createRenderer<TestTarget>({
       getRenderTarget: () => ctx,
     };
   },
-  createText: (str) => ({
-    innerText: str,
-  }),
+  createText: (str) => {
+    const ctx = {
+      innerText: str,
+    };
+
+    return {
+      setText: (newStr) => (ctx.innerText = newStr),
+      getRenderTarget: () => ctx,
+    };
+  },
 });
 
 describe('api', () => {
@@ -93,6 +100,88 @@ describe('api', () => {
       events: [],
       children: [],
       attributes: { foo: 'bar' },
+    });
+  });
+
+  it('should work with child nodes', () => {
+    const out = html`<h1>
+      <h2></h2>
+      <h3></h3>
+    </h1>`;
+    if ('innerText' in out) {
+      expect.fail();
+    }
+
+    expect(out).to.deep.equal({
+      tag: 'h1',
+      events: [],
+      children: [
+        {
+          tag: 'h2',
+          events: [],
+          children: [],
+          attributes: {},
+        },
+        {
+          tag: 'h3',
+          events: [],
+          children: [],
+          attributes: {},
+        },
+      ],
+      attributes: {},
+    });
+  });
+
+  it('should work with child text node', () => {
+    const out = html`<h1>Hello</h1>`;
+    if ('innerText' in out) {
+      expect.fail();
+    }
+
+    expect(out).to.deep.equal({
+      tag: 'h1',
+      events: [],
+      children: [
+        {
+          innerText: 'Hello',
+        },
+      ],
+      attributes: {},
+    });
+  });
+
+  it('should work with child data node', async () => {
+    const A = createAtom({
+      default: 3,
+    });
+    const out = html`<h1>${A}</h1>`;
+    if ('innerText' in out) {
+      expect.fail();
+    }
+
+    expect(out).to.deep.equal({
+      tag: 'div',
+      events: [],
+      children: [
+        {
+          innerText: '3',
+        },
+      ],
+      attributes: {},
+    });
+
+    A.set(42);
+    await wait();
+    expect(out).to.deep.equal({
+      tag: 'div',
+      events: [],
+      children: [
+        {
+          innerText: '42',
+        },
+      ],
+      attributes: {},
     });
   });
 
