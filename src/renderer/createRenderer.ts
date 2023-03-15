@@ -6,13 +6,13 @@ import type { DynamicSegments } from '!types/DynamicSegments';
 import { RenderError } from '!errors/RenderError';
 import { renderChild } from '!renderer/renderChild';
 import { isWhitespaceNode } from '!util/isWhitespaceNode';
+import { TagFunction } from '!types/TagFunction';
 
 export const createRenderer =
-  <RenderTarget>(config: RendererConfig<RenderTarget>) =>
-  (
-    staticSegments: TemplateStringsArray,
-    ...dynamicSegments: DynamicSegments<RenderTarget>[]
-  ): RenderTarget => {
+  <RenderTarget>(
+    config: RendererConfig<RenderTarget>
+  ): TagFunction<RenderTarget> =>
+  (staticSegments, ...dynamicSegments) => {
     const ast = xml(staticSegments, ...dynamicSegments);
 
     const rootCandidates = ast.children.filter((ast) => !isWhitespaceNode(ast));

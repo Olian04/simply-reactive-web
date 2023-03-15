@@ -5,12 +5,14 @@ type BaseTypes = string | number;
 export type DynamicChild<RenderTarget> =
   | BaseTypes
   | RenderTarget[]
-  | (Trait.ImplementsGet<BaseTypes> & Trait.ImplementsSubscribe);
+  | (Trait.ImplementsGet<BaseTypes | RenderTarget[]> &
+      Trait.ImplementsSubscribe);
 
 export type DynamicAttribute =
   | BaseTypes
-  | (Trait.ImplementsGet<BaseTypes> & Trait.ImplementsSubscribe)
-  | ((ev: Event) => void);
+  | ((ev: Event) => void)
+  | (Trait.ImplementsGet<BaseTypes | ((ev: Event) => void)> &
+      Trait.ImplementsSubscribe);
 
 export type DynamicSegments<RenderTarget> =
   | DynamicChild<RenderTarget>

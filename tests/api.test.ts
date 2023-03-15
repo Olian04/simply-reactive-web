@@ -1,53 +1,10 @@
 import { describe, it } from 'mocha';
 import { expect } from 'chai';
-
-import { createRenderer } from '!api';
-import { RenderError } from '!errors/RenderError';
 import { createAtom } from 'simply-reactive';
 
-const wait = async (milliseconds: number = 0) =>
-  new Promise((resolve) => setTimeout(resolve, milliseconds));
-
-type TestTarget =
-  | {
-      tag: string;
-      events: [string, Function][];
-      children: TestTarget[];
-      attributes: Record<string, string>;
-    }
-  | {
-      innerText: string | null;
-    };
-
-const html = createRenderer<TestTarget>({
-  createElement: (tag) => {
-    const ctx: TestTarget = {
-      tag,
-      events: [],
-      children: [],
-      attributes: {},
-    };
-    return {
-      addEventListener: (ev, cb) => ctx.events.push([ev, cb]),
-      removeEventListener: (ev, cb) =>
-        (ctx.events = ctx.events.filter(([e, c]) => e !== ev && c !== cb)),
-      appendChildren: (...evs) => ctx.children.push(...evs),
-      setAttribute: (k, v) => (ctx.attributes[k] = v),
-      setClassName: (v) => (ctx.attributes.class = v),
-      getRenderTarget: () => ctx,
-    };
-  },
-  createText: (str) => {
-    const ctx = {
-      innerText: str,
-    };
-
-    return {
-      setText: (newStr) => (ctx.innerText = newStr),
-      getRenderTarget: () => ctx,
-    };
-  },
-});
+import { RenderError } from '!errors/RenderError';
+import { wait } from './util/wait';
+import { html } from './util/testRenderer';
 
 describe('api', () => {
   it('should export a template literal tag function', () => {
@@ -161,7 +118,7 @@ describe('api', () => {
     }
 
     expect(out).to.deep.equal({
-      tag: 'div',
+      tag: 'h1',
       events: [],
       children: [
         {
@@ -174,7 +131,7 @@ describe('api', () => {
     A.set(42);
     await wait();
     expect(out).to.deep.equal({
-      tag: 'div',
+      tag: 'h1',
       events: [],
       children: [
         {
