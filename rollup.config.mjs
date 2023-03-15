@@ -9,7 +9,7 @@ export default [
   {
     input: './src/api.ts',
     output: {
-      file: './dist/api.umd.js',
+      file: './cdn/umd.js',
       format: 'umd',
       name: 'simplyReactiveWeb',
       sourcemap: true,
@@ -32,7 +32,7 @@ export default [
   {
     input: './src/api.ts',
     output: {
-      file: './dist/api.es.js',
+      file: './cdn/esm.js',
       format: 'es',
       sourcemap: true,
     },
@@ -50,35 +50,5 @@ export default [
       commonjs(),
       terser(),
     ],
-  },
-  {
-    input: './src/api.ts',
-    output: {
-      file: './dist/api.js',
-      format: 'commonjs',
-      sourcemap: true,
-    },
-    plugins: [
-      typescript({
-        typescript: ttypescript,
-        target: 'es6',
-        module: 'es6',
-        compilerOptions: {
-          target: 'es6',
-          module: 'es6',
-          plugins: [
-            { transform: 'typescript-transform-paths' },
-            {
-              transform: 'typescript-transform-paths',
-              afterDeclarations: true,
-            },
-          ],
-        },
-        exclude: ['tests/**/*.test.ts'],
-      }),
-      resolve(),
-      commonjs(),
-      terser(),
-    ],
-  },
+  }
 ];
