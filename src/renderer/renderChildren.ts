@@ -17,13 +17,13 @@ export const renderChildren = <RenderTarget>(
   ast.children
     .filter((ast) => !isWhitespaceNode(ast))
     .map((ast) => stripWhitespaceFromNode(ast))
-    .flatMap((child) => {
+    .map((child) => {
       if (child.type === ChildType.Text) {
-        return config.createText(child.value).getRenderTarget();
+        return [config.createText(child.value).getRenderTarget()];
       }
 
       if (child.type === ChildType.Node) {
-        return renderChild(config, child);
+        return [renderChild(config, child)];
       }
 
       if (!isValidDataChild(child)) {
@@ -33,11 +33,11 @@ export const renderChildren = <RenderTarget>(
       }
 
       if (typeof child.value === 'string') {
-        return config.createText(child.value).getRenderTarget();
+        return [config.createText(child.value).getRenderTarget()];
       }
 
       if (typeof child.value === 'number') {
-        return config.createText(String(child.value)).getRenderTarget();
+        return [config.createText(String(child.value)).getRenderTarget()];
       }
 
       if (Array.isArray(child.value)) {
@@ -51,12 +51,13 @@ export const renderChildren = <RenderTarget>(
           frag.clearChildren();
           frag.appendChildren(...(Value.get() as RenderTarget[]));
         });
-        return frag.getRenderTarget();
+        return [frag.getRenderTarget()];
       } else {
         const text = config.createText(String(Value.get()));
         createEffect(() => {
           text.setText(String(Value.get()));
         });
-        return text.getRenderTarget();
+        return [text.getRenderTarget()];
       }
-    });
+    })
+    .reduce((acc, arr) => acc.concat(arr), [] as RenderTarget[]);
