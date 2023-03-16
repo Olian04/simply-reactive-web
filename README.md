@@ -45,6 +45,7 @@ import { html, forEach } from 'simply-reactive-web';
 <script src="https://cdn.jsdelivr.net/npm/simply-reactive@5/cdn/umd.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/simply-reactive-web/cdn/umd.js"></script>
 <script>
+  const { createAtom, createSelector, createEffect } = simplyReactive;
   const { html, forEach } = simplyReactiveWeb;
 </script>
 ```
