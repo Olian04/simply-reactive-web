@@ -12,7 +12,7 @@
     "build": "npm run build:node && npm run build:web",
     "build:node": "rimraf ./dist && ttsc --project tsconfig.prod.json",
     "build:web": "rimraf ./cdn && rollup --config",
-    "demo:hello": "ts-node ./demos/helloWorld.ts"
+    "demo:web": "npx http-server -c-1 ./demos"
   },
   "repository": {
     "type": "git",
