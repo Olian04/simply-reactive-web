@@ -17,7 +17,7 @@ type TestTarget =
       innerText: string | null;
     };
 
-export const html = createRenderer<TestTarget>({
+export const html = createRenderer<TestTarget, TestTarget & { type: 'Node' }>({
   createFragment: () => {
     const ctx: TestTarget = {
       type: 'Fragment',

@@ -48,10 +48,6 @@ describe('api', () => {
 
   it('should work with text attributes', () => {
     const out = html` <div foo="bar"></div> `;
-    if (out.type !== 'Node') {
-      expect.fail();
-    }
-
     expect(out).to.deep.equal({
       type: 'Node',
       tag: 'div',
@@ -66,10 +62,6 @@ describe('api', () => {
       <h2></h2>
       <h3></h3>
     </h1>`;
-    if (out.type !== 'Node') {
-      expect.fail();
-    }
-
     expect(out).to.deep.equal({
       type: 'Node',
       tag: 'h1',
@@ -96,10 +88,6 @@ describe('api', () => {
 
   it('should work with child text node', () => {
     const out = html`<h1>Hello</h1>`;
-    if (out.type !== 'Node') {
-      expect.fail();
-    }
-
     expect(out).to.deep.equal({
       type: 'Node',
       tag: 'h1',
@@ -119,9 +107,6 @@ describe('api', () => {
       default: 3,
     });
     const out = html`<h1>${A}</h1>`;
-    if (out.type !== 'Node') {
-      expect.fail();
-    }
 
     expect(out).to.deep.equal({
       type: 'Node',
@@ -157,9 +142,6 @@ describe('api', () => {
       default: 3,
     });
     const out = html` <div foo=${A}></div> `;
-    if (out.type !== 'Node') {
-      expect.fail();
-    }
 
     expect(out).to.deep.equal({
       type: 'Node',
@@ -185,9 +167,6 @@ describe('api', () => {
       default: 3,
     });
     const out = html` <div foo="before ${A} after"></div> `;
-    if (out.type !== 'Node') {
-      expect.fail();
-    }
 
     expect(out).to.deep.equal({
       type: 'Node',
@@ -211,10 +190,6 @@ describe('api', () => {
   it('should work with function attributes', () => {
     const func = () => 42;
     const out = html` <div foo=${func}></div> `;
-
-    if (out.type !== 'Node') {
-      expect.fail();
-    }
 
     expect(out).to.deep.equal({
       type: 'Node',

@@ -8,11 +8,11 @@ import { renderChild } from '!renderer/renderChild';
 import { isWhitespaceNode } from '!util/isWhitespaceNode';
 
 export const createRenderer =
-  <RenderTarget>(config: RendererConfig<RenderTarget>) =>
+  <RenderTarget, RenderTargetRoot extends RenderTarget = RenderTarget>(config: RendererConfig<RenderTarget>) =>
   (
     staticSegments: TemplateStringsArray,
     ...dynamicSegments: DynamicSegments<RenderTarget>[]
-  ): RenderTarget => {
+  ): RenderTargetRoot => {
     const ast = xml(staticSegments, ...dynamicSegments);
 
     const rootCandidates = ast.children.filter((ast) => !isWhitespaceNode(ast));
@@ -27,5 +27,5 @@ export const createRenderer =
       throw new RenderError('Root element must be a valid XML node.');
     }
 
-    return renderChild(config, root);
+    return renderChild(config, root) as RenderTargetRoot;
   };

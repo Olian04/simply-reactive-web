@@ -19,9 +19,6 @@ describe('forEach', () => {
         ${forEach(A, (v) => html`<li>${v}</li>`)}
       </ol>
     `;
-    if (out.type !== 'Node') {
-      expect.fail();
-    }
 
     expect(out).to.deep.equal({
       type: 'Node',
@@ -83,12 +80,8 @@ describe('forEach', () => {
         ${forEach(A, (v) => html`<li>${v}</li>`)}
       </ol>
     `;
-    if (out.type !== 'Node') {
-      expect.fail();
-    }
 
     A.set(['A', 'B', 'C']);
-
     expect(out).to.deep.equal({
       type: 'Node',
       tag: 'ol',
