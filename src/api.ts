@@ -2,7 +2,7 @@ import { createRenderer } from '!renderer/createRenderer';
 
 export { createQueryAtom } from '!composites/createQueryAtom';
 export { createRenderer } from '!renderer/createRenderer';
-export { forEach } from '!helpers/forEach';
+export { forEach } from '!composites/forEach';
 
 export const html = createRenderer<Node, HTMLElement>({
   createFragment: () => {
