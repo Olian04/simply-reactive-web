@@ -10,7 +10,7 @@ describe('forEach', () => {
     expect(typeof forEach).to.equal('function');
   });
 
-  it('should work', () => {
+  it('should render initial values', () => {
     const A = createAtom({
       default: ['A', 'B', 'C'],
     });
@@ -22,6 +22,72 @@ describe('forEach', () => {
     if (out.type !== 'Node') {
       expect.fail();
     }
+
+    expect(out).to.deep.equal({
+      type: 'Node',
+      tag: 'ol',
+      events: [],
+      children: [
+        {
+          type: 'Fragment',
+          children: [
+            {
+              type: 'Node',
+              tag: 'li',
+              events: [],
+              children: [
+                {
+                  type: 'Text',
+                  innerText: A.get()[0],
+                },
+              ],
+              attributes: {},
+            },
+            {
+              type: 'Node',
+              tag: 'li',
+              events: [],
+              children: [
+                {
+                  type: 'Text',
+                  innerText: A.get()[1],
+                },
+              ],
+              attributes: {},
+            },
+            {
+              type: 'Node',
+              tag: 'li',
+              events: [],
+              children: [
+                {
+                  type: 'Text',
+                  innerText: A.get()[2],
+                },
+              ],
+              attributes: {},
+            },
+          ],
+        },
+      ],
+      attributes: {},
+    });
+  });
+
+  it('should render updated values', () => {
+    const A = createAtom({
+      default: [] as string[],
+    });
+    const out = html`
+      <ol>
+        ${forEach(A, (v) => html`<li>${v}</li>`)}
+      </ol>
+    `;
+    if (out.type !== 'Node') {
+      expect.fail();
+    }
+
+    A.set(['A', 'B', 'C']);
 
     expect(out).to.deep.equal({
       type: 'Node',
