@@ -4,6 +4,7 @@ import { createAtom } from 'simply-reactive';
 
 import { forEach } from '!api';
 import { html } from './util/testRenderer';
+import { wait } from './util/wait';
 
 describe('forEach', () => {
   it('should export a function', () => {
@@ -71,7 +72,7 @@ describe('forEach', () => {
     });
   });
 
-  it('should render updated values', () => {
+  it('should render updated values', async () => {
     const A = createAtom({
       default: [] as string[],
     });
@@ -82,6 +83,7 @@ describe('forEach', () => {
     `;
 
     A.set(['A', 'B', 'C']);
+    await wait();
     expect(out).to.deep.equal({
       type: 'Node',
       tag: 'ol',
