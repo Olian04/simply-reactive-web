@@ -1,10 +1,10 @@
 import { createRenderer } from '!renderer/createRenderer';
 
-export { createQueryAtom } from '!composits/createQueryAtom';
+export { createQueryAtom } from '!composites/createQueryAtom';
 export { createRenderer } from '!renderer/createRenderer';
 export { forEach } from '!helpers/forEach';
 
-export const html = createRenderer<Node>({
+export const html = createRenderer<Node, HTMLElement>({
   createFragment: () => {
     const frag = document.createDocumentFragment();
     return {
